@@ -24,5 +24,7 @@ if [ ! -f "./install/local_setup.bash" ]; then
 fi
 
 echo "Running test_kinesis.py"
-source ${workspace}/install/local_setup.bash
+if [ "$TRAVIS" != true ]; then
+    source ${workspace}/install/local_setup.bash
+fi
 python3 test_kinesis.py -v
