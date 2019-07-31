@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -f "./travis" ]; then
+    export TRAVIS=true
+fi
+
 pip3 install massedit
 
 extract_to=/tmp
