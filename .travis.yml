@@ -19,6 +19,7 @@ env:
   matrix:
   - ROS_DISTRO="dashing" UPSTREAM_WORKSPACE=.rosinstall
 install:
+- touch travis
 - git clone -b colcon-rebase https://github.com/ipa-mdl/industrial_ci.git .ros_ci
 script:
 - ".ros_ci/travis.sh"
