@@ -14,11 +14,13 @@ source /opt/ros/dashing/local_setup.bash
 
 if [ ! -f "./install/local_setup.bash" ]; then
     echo "Building workspace"
-    rosws update
-    if [ -d "src/deps/kinesisvideo-encoder-ros2/kinesis_video_msgs" ]; then
-        rm -rf "src/deps/kinesisvideo-encoder-ros2/kinesis_video_msgs"
+    if [ "$TRAVIS" != true ]; then
+        rosws update
+        if [ -d "src/deps/kinesisvideo-encoder-ros2/kinesis_video_msgs" ]; then
+            rm -rf "src/deps/kinesisvideo-encoder-ros2/kinesis_video_msgs"
+        fi
+        colcon build
     fi
-    colcon build
 fi
 
 echo "Running test_kinesis.py"
