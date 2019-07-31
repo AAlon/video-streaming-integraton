@@ -59,6 +59,7 @@ class KinesisTestManager(object):
         self._rekognition_role_name = 'integ-test-role'
         self._encoder_subscription_topic = r'"/videofile/image_raw"'
         self._processes = []
+        self._policy_doc_path = r'/tmp/policy_doc'
         #self._bag_path = 'new_format_short'
 
     def _fq(self, name):
@@ -156,11 +157,12 @@ class KinesisTestManager(object):
 
         # Role
         rekognition_policy = REKOGNITION_POLICY_TEMPLATE % {'kvs_arn': self._kinesis_video_stream_arn, 'kds_arn': self._kinesis_data_stream_arn}
-        with open('policy_doc', 'w') as f:
+        with open(self._policy_doc_path, 'w') as f:
             f.write(rekognition_policy)
 
-        self._rekognition_policy_arn = sp.check_output('''aws iam create-policy --policy-name %(policy_name)s --policy-document file://policy_doc | jq -r ."Policy"."Arn"''' % {
-            'policy_name': self._fq(self._rekognition_policy_name)
+        self._rekognition_policy_arn = sp.check_output('''aws iam create-policy --policy-name %(policy_name)s --policy-document file://%(policy_doc)s | jq -r ."Policy"."Arn"''' % {
+            'policy_name': self._fq(self._rekognition_policy_name),
+            'policy_doc': self._policy_doc_path
         }, shell=True).strip().decode('utf-8')
 
         self._rekognition_role_arn = sp.check_output('''aws iam create-role --role-name %(test_role)s --assume-role-policy-document file://assets/trust_rekognition | jq -r ."Role"."Arn"''' % {
