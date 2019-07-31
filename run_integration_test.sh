@@ -2,10 +2,11 @@
 
 pip3 install massedit
 
-extracted_bag_name="new_format_short"
+extract_to=/tmp
+extracted_bag_name="${extract_to}/new_format_short"
 if [ ! -d "$extracted_bag_name" ]; then
     echo "Downloading and extracting bag file"
-    bash prepare_bag.sh
+    bash prepare_bag.sh ${extract_to}
 fi
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -27,4 +28,4 @@ echo "Running test_kinesis.py"
 if [ "$TRAVIS" != true ]; then
     source ${workspace}/install/local_setup.bash
 fi
-python3 test_kinesis.py -v
+python3 test_kinesis.py -v ${extracted_bag_name}
