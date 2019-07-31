@@ -31,5 +31,7 @@ fi
 echo "Running test_kinesis.py"
 if [ "$TRAVIS" != true ]; then
     source ${workspace}/install/local_setup.bash
+else
+    . .creds
 fi
 python3 test_kinesis.py -v ${extracted_bag_name}
