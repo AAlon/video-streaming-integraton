@@ -44,6 +44,9 @@ class KinesisTestManager(object):
             if arg == '-v' or arg == '--verbose':
                 self.log('Verbose mode')
                 self._verbose = True
+            if os.path.isfile(arg):
+                # This is terrible.
+                self._bag_path = arg
 
         self._run_id = test_run_id[:8] # Take first 8 characters
         self._collection_name = 'integ-test'
@@ -56,7 +59,7 @@ class KinesisTestManager(object):
         self._rekognition_role_name = 'integ-test-role'
         self._encoder_subscription_topic = r'"/videofile/image_raw"'
         self._processes = []
-        self._bag_path = 'new_format_short'
+        #self._bag_path = 'new_format_short'
 
     def _fq(self, name):
         fully_qualified_name = self._run_id + '-' + name
