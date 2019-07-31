@@ -38,6 +38,7 @@ if [ "$TRAVIS" != true ]; then
 else
     upstream_workspace=/root/upstream_ws
     . .creds
+    cp "${upstream_workspace}/src/src/deps/kinesisvideo-ros2/kinesis_video_streamer/config/kvs_log_configuration" "/tmp/kvs_log_configuration"
 fi
 source ${upstream_workspace}/install/local_setup.bash
 

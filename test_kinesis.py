@@ -201,7 +201,7 @@ class KinesisTestManager(object):
         # Delete KDS
         sp.check_output('aws kinesis delete-stream --stream-name %s' % (self._fq(self._data_stream_name), ), shell=True)
         # Stream processor
-        time.sleep(1)
+        time.sleep(5)
         sp.check_output('aws rekognition stop-stream-processor --name %s' % (self._fq(self._stream_processor_name), ), shell=True)
         sp.check_output('aws rekognition delete-stream-processor --name %s' % (self._fq(self._stream_processor_name), ), shell=True)
         # Detach policy from role
@@ -247,7 +247,7 @@ class KinesisTestManager(object):
         self.rosbag_play()
         time.sleep(2)
 
-        self._rekognition_results_file = 'rekognition_results'
+        self._rekognition_results_file = r'/tmp/rekognition_results'
         if os.path.isfile(self._rekognition_results_file):
             os.remove(self._rekognition_results_file)
         echo_cmd = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'topic_to_file.sh') + ' /rekognition/results std_msgs/msg/String ' + self._rekognition_results_file
