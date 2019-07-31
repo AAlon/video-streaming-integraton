@@ -40,7 +40,7 @@ REKOGNITION_POLICY_TEMPLATE = '''{
 class KinesisTestManager(object):
     def __init__(self, test_run_id=uuid.uuid4().hex):
         self._verbose = False
-        for arg in sys.argv:
+        for arg in sys.argv[1:]:
             if arg == '-v' or arg == '--verbose':
                 self.log('Verbose mode')
                 self._verbose = True

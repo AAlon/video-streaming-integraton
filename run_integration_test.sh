@@ -4,7 +4,11 @@ if [ -f "./travis" ]; then
     export TRAVIS=true
 fi
 
-pip3 install massedit
+if [ "$TRAVIS" == true ]; then
+    pip3 install massedit
+else
+    sudo pip3 install massedit
+fi
 
 extract_to=/tmp
 extracted_bag_name="${extract_to}/new_format_short"
