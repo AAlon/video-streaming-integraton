@@ -1,0 +1,19 @@
+sudo: required 
+language: generic 
+compiler:
+  - gcc
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+    recipients:
+      - avishaya@amazon.com
+env:
+  global:
+    - after_install_target_dependencies='./run_integration_test.sh'
+  matrix:
+    - ROS_DISTRO="dashing" UPSTREAM_WORKSPACE=.rosinstall
+install:
+  - git clone -b colcon-rebase https://github.com/ipa-mdl/industrial_ci.git .ros_ci
+script:
+  - .ros_ci/travis.sh
