@@ -10,7 +10,7 @@ notifications:
       - avishaya@amazon.com
 env:
   global:
-    - after_install_target_dependencies='./run_integration_test.sh'
+    - AFTER_RUN_TARGET_TEST='./run_integration_test.sh -v'
   matrix:
     - ROS_DISTRO="dashing" UPSTREAM_WORKSPACE=.rosinstall
 install:
