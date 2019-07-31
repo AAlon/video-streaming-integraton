@@ -39,6 +39,12 @@ REKOGNITION_POLICY_TEMPLATE = '''{
 
 class KinesisTestManager(object):
     def __init__(self, test_run_id=uuid.uuid4().hex):
+        self._verbose = False
+        for arg in sys.argv:
+            if arg == '-v' or arg == '--verbose':
+                self.log('Verbose mode')
+                self._verbose = True
+
         self._run_id = test_run_id[:8] # Take first 8 characters
         self._collection_name = 'integ-test'
         self._bucket_name = 'rekog-test-bucket'
@@ -66,7 +72,11 @@ class KinesisTestManager(object):
         massedit.edit_files(
           [streamer_config_path, ],
           ["re.sub('stream_name:(.*)', 'stream_name: %s', line)" % (self._fq(self._video_stream_name), ),
-           "re.sub('rekognition_data_stream:(.*)', 'rekognition_data_stream: %s', line)" % (self._fq(self._data_stream_name), )
+           "re.sub('rekognition_data_stream:(.*)', 'rekognition_data_stream: %s', line)" % (self._fq(self._data_stream_name), ),
+           "re.sub('\#\srekognition_data_stream:', 'rekognition_data_stream:', line)",
+           "re.sub('topic_type:(.*)', 'topic_type: 3', line)",
+           "re.sub('rekognition_topic_name:(.*)', 'rekognition_topic_name: /rekognition/results', line)",
+           "re.sub('\#\srekognition_topic_name:', 'rekognition_topic_name:', line)"
           ],
         dry_run=False)
 
@@ -228,6 +238,7 @@ class KinesisTestManager(object):
         # Get the rosbag & extract
         self.start_up_core_nodes()
         # ros2 bag play
+        time.sleep(2)
         self.rosbag_play()
         time.sleep(2)
 
@@ -240,7 +251,7 @@ class KinesisTestManager(object):
 
         self.log('Running for 60 seconds')
         time.sleep(65)
-        self._assert_faces_in_file(10)
+        self._assert_faces_in_file(5)
 
         self.log('Finished %s' % (self.test_end_to_end_rekognition.__name__, ))
         self.kill_nodes()
@@ -252,12 +263,18 @@ class KinesisTestManager(object):
 
     def start_up_core_nodes(self):
         # Run encoder
-        encoder_cmd = 'ros2 launch h264_video_encoder h264_video_encoder_launch.py __params:=%s/share/h264_video_encoder/config/sample_configuration.yaml' % (self._encoder_prefix, )
-        encoder = sp.Popen(shlex.split(encoder_cmd), stdout=sp.DEVNULL, stderr=sp.DEVNULL, preexec_fn=os.setsid)
+        encoder_cmd = 'ros2 launch h264_video_encoder h264_video_encoder_launch.py --screen'
+        if self._verbose:
+            encoder = sp.Popen(shlex.split(encoder_cmd), preexec_fn=os.setsid)
+        else:
+            encoder = sp.Popen(shlex.split(encoder_cmd), stdout=sp.DEVNULL, preexec_fn=os.setsid)
 
         # Run streamer
-        streamer_cmd = 'ros2 run kinesis_video_streamer kinesis_video_streamer __params:=%s/share/kinesis_video_streamer/config/sample_config.yaml' % (self._streamer_prefix, )
-        streamer = sp.Popen(shlex.split(streamer_cmd), stdout=sp.DEVNULL, stderr=sp.DEVNULL, preexec_fn=os.setsid)
+        streamer_cmd = 'ros2 launch kinesis_video_streamer kinesis_video_streamer.launch.py --screen'
+        if self._verbose:
+            streamer = sp.Popen(shlex.split(streamer_cmd), preexec_fn=os.setsid)
+        else:
+            streamer = sp.Popen(shlex.split(streamer_cmd), stdout=sp.DEVNULL, preexec_fn=os.setsid)
 
         self._processes.append(encoder)
         self._processes.append(streamer)
