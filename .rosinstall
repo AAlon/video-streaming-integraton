@@ -3,4 +3,4 @@
 - git: {local-name: src/deps/kinesisvideo-common, uri: 'https://github.com/aws-robotics/kinesisvideo-common'}
 - git: {local-name: src/deps/kinesisvideo-ros2, uri: 'https://github.com/aws-robotics/kinesisvideo-ros2', version: launch_script}
 - git: {local-name: src/deps/kinesisvideo-encoder-common, uri: 'https://github.com/aws-robotics/kinesisvideo-encoder-common'}
-- git: {local-name: src/deps/kinesisvideo-encoder-ros2, uri: 'https://github.com/aws-robotics/kinesisvideo-encoder-ros2'}
+- git: {local-name: src/deps/kinesisvideo-encoder-ros2, uri: 'https://github.com/aws-robotics/kinesisvideo-encoder-ros2', version: AAlon-patch-2}
