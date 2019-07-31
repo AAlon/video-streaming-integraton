@@ -36,12 +36,9 @@ if [ "$TRAVIS" != true ]; then
     upstream_workspace=.
 else
     upstream_workspace=/root/upstream_ws
-fi
-source ${upstream_workspace}/install/local_setup.bash
-
-if [ "$TRAVIS" == true ]; then
     . .creds
 fi
+source ${upstream_workspace}/install/local_setup.bash
 
 echo "Running test_kinesis.py"
 python3 test_kinesis.py -v ${extracted_bag_name}
