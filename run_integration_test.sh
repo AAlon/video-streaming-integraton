@@ -7,7 +7,7 @@ fi
 if [ "$TRAVIS" == true ]; then
     pip3 install massedit
 else
-    sudo pip3 install massedit
+    sudo -H pip3 install massedit
 fi
 
 extract_to=/tmp

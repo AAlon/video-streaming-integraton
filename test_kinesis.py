@@ -44,7 +44,7 @@ class KinesisTestManager(object):
             if arg == '-v' or arg == '--verbose':
                 self.log('Verbose mode')
                 self._verbose = True
-            if os.path.isfile(arg):
+            if os.path.exists(arg):
                 # This is terrible.
                 self._bag_path = arg
 
