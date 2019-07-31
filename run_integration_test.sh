@@ -44,3 +44,4 @@ source ${upstream_workspace}/install/local_setup.bash
 
 echo "Running test_kinesis.py"
 python3 test_kinesis.py -v ${extracted_bag_name}
+cat /tmp/rekognition_results
