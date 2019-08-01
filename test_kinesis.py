@@ -274,6 +274,10 @@ class KinesisTestManager(object):
 
         self.log('Running for 60 seconds')
         time.sleep(65)
+        
+        self.rosbag_play()
+        time.sleep(65)
+        
         self._assert_faces_in_file(1)
 
         self.log('Finished %s' % (self.test_end_to_end_rekognition.__name__, ))
