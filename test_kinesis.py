@@ -201,9 +201,16 @@ class KinesisTestManager(object):
         # Delete KDS
         sp.check_output('aws kinesis delete-stream --stream-name %s' % (self._fq(self._data_stream_name), ), shell=True)
         # Stream processor
-        time.sleep(5)
-        sp.check_output('aws rekognition stop-stream-processor --name %s' % (self._fq(self._stream_processor_name), ), shell=True)
-        sp.check_output('aws rekognition delete-stream-processor --name %s' % (self._fq(self._stream_processor_name), ), shell=True)
+        time.sleep(10)
+        should_retry_stream_processor_deletion = False
+        try:
+            sp.check_output('aws rekognition stop-stream-processor --name %s' % (self._fq(self._stream_processor_name), ), shell=True)
+            sp.check_output('aws rekognition delete-stream-processor --name %s' % (self._fq(self._stream_processor_name), ), shell=True)
+        except Exception as e:
+            self.log(e)
+            self.log('Deletion of stream processor failed, will be retried later.')
+            should_retry_stream_processor_deletion = True
+            
         # Detach policy from role
         sp.check_output('aws iam detach-role-policy --role-name %s --policy-arn %s' % (self._fq(self._rekognition_role_name), self._rekognition_policy_arn, ), shell=True)
         # Role
@@ -218,6 +225,9 @@ class KinesisTestManager(object):
         # Bucket
         sp.check_output('aws s3 rb s3://%s --force' % (self._fq(self._bucket_name), ), shell=True)
 
+        if should_retry_stream_processor_deletion:
+            sp.check_output('aws rekognition delete-stream-processor --name %s' % (self._fq(self._stream_processor_name), ), shell=True)
+            
         self.log('Finished cleaning up resources')
 
     def log(self, msg):
@@ -243,7 +253,7 @@ class KinesisTestManager(object):
         # Get the rosbag & extract
         self.start_up_core_nodes()
         # ros2 bag play
-        time.sleep(2)
+        time.sleep(1)
         self.rosbag_play()
         time.sleep(2)
 
@@ -256,7 +266,7 @@ class KinesisTestManager(object):
 
         self.log('Running for 60 seconds')
         time.sleep(65)
-        self._assert_faces_in_file(5)
+        self._assert_faces_in_file(1)
 
         self.log('Finished %s' % (self.test_end_to_end_rekognition.__name__, ))
         self.kill_nodes()
