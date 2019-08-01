@@ -201,7 +201,7 @@ class KinesisTestManager(object):
         # Delete KDS
         sp.check_output('aws kinesis delete-stream --stream-name %s' % (self._fq(self._data_stream_name), ), shell=True)
         # Stream processor
-        time.sleep(10)
+        time.sleep(15)
         should_retry_stream_processor_deletion = False
         try:
             sp.check_output('aws rekognition stop-stream-processor --name %s' % (self._fq(self._stream_processor_name), ), shell=True)
@@ -253,9 +253,9 @@ class KinesisTestManager(object):
         # Get the rosbag & extract
         self.start_up_core_nodes()
         # ros2 bag play
-        time.sleep(1)
-        self.rosbag_play()
         time.sleep(2)
+        self.rosbag_play()
+        time.sleep(1)
 
         self._rekognition_results_file = r'/tmp/rekognition_results'
         if os.path.isfile(self._rekognition_results_file):
