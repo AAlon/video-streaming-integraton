@@ -1,6 +1,6 @@
 - git: {local-name: src/deps/utils-common, uri: 'https://github.com/aws-robotics/utils-common'}
 - git: {local-name: src/deps/utils-ros2, uri: 'https://github.com/aws-robotics/utils-ros2'}
 - git: {local-name: src/deps/kinesisvideo-common, uri: 'https://github.com/aws-robotics/kinesisvideo-common'}
-- git: {local-name: src/deps/kinesisvideo-ros2, uri: 'https://github.com/aws-robotics/kinesisvideo-ros2', version: stable-tests}
+- git: {local-name: src/deps/kinesisvideo-ros2, uri: 'https://github.com/aws-robotics/kinesisvideo-ros2'}
 - git: {local-name: src/deps/kinesisvideo-encoder-common, uri: 'https://github.com/aws-robotics/kinesisvideo-encoder-common'}
 - git: {local-name: src/deps/kinesisvideo-encoder-ros2, uri: 'https://github.com/aws-robotics/kinesisvideo-encoder-ros2'}
