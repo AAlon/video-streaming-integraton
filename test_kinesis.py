@@ -88,11 +88,11 @@ class KinesisTestManager(object):
           [
               "re.sub('subscription_topic:(.*)', 'subscription_topic: %s', line)" % (self._encoder_subscription_topic, ), 
               "re.sub('bitrate:(.*)', 'bitrate: 512000', line)",
-              "re.sub('output_width:(.*)', 'output_width: 480', line)",
+              "re.sub('output_width:(.*)', 'output_width: 400', line)",
               "re.sub('\#\soutput_width:', 'output_width:', line)",
               "re.sub('output_height:(.*)', 'output_height: 320', line)",
               "re.sub('\#\soutput_height:', 'output_height:', line)",
-              "re.sub('fps_numerator:(.*)', 'fps_numerator: 25', line)"
+              "re.sub('fps_numerator:(.*)', 'fps_numerator: 28', line)"
           ],
         dry_run=False)
 
