@@ -284,8 +284,9 @@ class KinesisTestManager(object):
         self.kill_nodes()
 
     def rosbag_play(self):
-        bag_play_cmd = 'ros2 bag play -r 5000 %s' % (self._bag_path, )
-        bag_play = sp.Popen(shlex.split(bag_play_cmd), preexec_fn=os.setsid)
+        self.log('Running ros2 bag play')
+        bag_play_cmd = 'ros2 bag play %s' % (self._bag_path, )
+        bag_play = sp.Popen(shlex.split(bag_play_cmd), stdout=sp.DEVNULL, stderr=sp.DEVNULL, preexec_fn=os.setsid)
         self._processes.append(bag_play)
 
     def start_up_core_nodes(self):
