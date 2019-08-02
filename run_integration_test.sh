@@ -1,5 +1,4 @@
 #!/bin/bash
-set -v
 
 if [ -f "./travis" ]; then
     export TRAVIS=true
