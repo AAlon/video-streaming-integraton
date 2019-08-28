@@ -23,6 +23,6 @@ install:
 - echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" > .creds
 - echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .creds
 - echo "export AWS_DEFAULT_REGION=us-west-2" >> .creds
-- git clone -b colcon-rebase https://github.com/ipa-mdl/industrial_ci.git .ros_ci
+- git clone -b master https://github.com/ros-industrial/industrial_ci .ros_ci
 script:
 - ".ros_ci/travis.sh"
