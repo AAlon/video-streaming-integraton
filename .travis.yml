@@ -8,6 +8,7 @@ notifications:
     on_failure: always
     recipients:
     - avishaya@amazon.com
+    - avishayalon@gmail.com
 env:
   global:
   - AFTER_INIT='env && echo `env` && df -h && echo `df -h`'
